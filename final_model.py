@@ -1,5 +1,5 @@
 # Tesla sourcing AHP/ADP scoring & plot
-# - Weights: Cost 50%, Risk 10%, Logistics 40%
+# - Weights: Cost 70%, Risk 10%, Logistics 20%
 # - Logistics is LOWER = better
 # - One chart: x-axis = ["Before 6 months", "After 6 months"]
 # - 3 colors for 3 countries
@@ -86,7 +86,7 @@ for i, (country, color) in enumerate(zip(countries_sorted, colors_sorted)):
 
 plt.xticks(x, ["Before 6 months", "After 6 months"], fontsize=11, fontweight='bold')
 plt.ylabel("Composite Score", fontsize=12, fontweight='bold')
-plt.title("Tesla Sourcing Decision Model\nWeighted Score: Cost 50% | Risk 10% | Logistics 40%", 
+plt.title("Tesla Sourcing Decision Model\nWeighted Score: Cost 70% | Risk 10% | Logistics 20%", 
           fontsize=13, fontweight='bold', pad=20)
 plt.legend(fontsize=11, loc='upper left', framealpha=0.95, edgecolor='black')
 plt.grid(axis='y', alpha=0.3, linestyle='--', linewidth=0.7)
@@ -120,7 +120,7 @@ plt.ylim(30, max(score_0_6.max(), score_6p.max()) + 2)
 
 plt.xticks(x, ["Before 6 months", "After 6 months"], fontsize=11, fontweight='bold')
 plt.ylabel("Composite Score", fontsize=12, fontweight='bold')
-plt.title("Tesla Sourcing Decision Model (Zoomed View)\nWeighted Score: Cost 60% | Risk 25% | Logistics 15%", 
+plt.title("Tesla Sourcing Decision Model (Zoomed View)\nWeighted Score: Cost 70% | Risk 10% | Logistics 20%", 
           fontsize=13, fontweight='bold', pad=20)
 plt.legend(fontsize=11, loc='upper left', framealpha=0.95, edgecolor='black')
 plt.grid(axis='y', alpha=0.3, linestyle='--', linewidth=0.7)
