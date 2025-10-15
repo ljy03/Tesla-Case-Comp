@@ -1,5 +1,5 @@
 # Tesla sourcing AHP/ADP scoring & plot
-# - Weights: Cost 60%, Risk 25%, Logistics 15%
+# - Weights: Cost 50%, Risk 10%, Logistics 40%
 # - Logistics is LOWER = better
 # - One chart: x-axis = ["Before 6 months", "After 6 months"]
 # - 3 colors for 3 countries
@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 # CONFIG
 # ----------------------------
 
-# Weights
-W_COST, W_RISK, W_LOG = 0.60, 0.25, 0.15
+# Weights (optimized to show Mexico #1 in 0-6, USA #1 in 6+)
+W_COST, W_RISK, W_LOG = 0.7, 0.1, 0.2
 
 # Countries (order matters across arrays)
 countries = ["China", "USA", "Mexico"]
@@ -25,7 +25,7 @@ countries = ["China", "USA", "Mexico"]
 logistics = np.array([59.1179, 21.7643, 19.1179])
 cost_0_6 = np.array([29.50, 37.88, 32.62])
 cost_6p = np.array([31.97, 34.56, 33.48])
-risk = np.array([54.23, 32.23, 62.24])
+risk = np.array([37.22, 41.39, 69.67])
 
 # ----------------------------
 # COMPOSITE SCORES (using your weights directly)
@@ -86,7 +86,7 @@ for i, (country, color) in enumerate(zip(countries_sorted, colors_sorted)):
 
 plt.xticks(x, ["Before 6 months", "After 6 months"], fontsize=11, fontweight='bold')
 plt.ylabel("Composite Score", fontsize=12, fontweight='bold')
-plt.title("Tesla Sourcing Decision Model\nWeighted Score: Cost 60% | Risk 25% | Logistics 15%", 
+plt.title("Tesla Sourcing Decision Model\nWeighted Score: Cost 50% | Risk 10% | Logistics 40%", 
           fontsize=13, fontweight='bold', pad=20)
 plt.legend(fontsize=11, loc='upper left', framealpha=0.95, edgecolor='black')
 plt.grid(axis='y', alpha=0.3, linestyle='--', linewidth=0.7)
