@@ -53,20 +53,21 @@ print(df.to_string(index=False))
 df.to_csv("tesla_ahp_scores.csv", index=False)
 
 # ----------------------------
-# PLOT (sorted from smallest to tallest score)
+# PLOT (each period sorted independently from lowest to highest)
 # ----------------------------
 
-# Sort countries by average score (smallest to tallest)
-avg_scores = (score_0_6 + score_6p) / 2
-sort_idx = np.argsort(avg_scores)
+# Sort countries separately for each period
+sort_idx_0_6 = np.argsort(score_0_6)
+sort_idx_6p = np.argsort(score_6p)
 
-countries_sorted = [countries[i] for i in sort_idx]
-score_0_6_sorted = score_0_6[sort_idx]
-score_6p_sorted = score_6p[sort_idx]
+countries_sorted_0_6 = [countries[i] for i in sort_idx_0_6]
+countries_sorted_6p = [countries[i] for i in sort_idx_6p]
+
+score_0_6_sorted = score_0_6[sort_idx_0_6]
+score_6p_sorted = score_6p[sort_idx_6p]
 
 # Better color scheme with high contrast
 colors_map = {"China": "#E63946", "USA": "#457B9D", "Mexico": "#2A9D8F"}
-colors_sorted = [colors_map[c] for c in countries_sorted]
 
 x = np.arange(2)  # [Before 6 months, After 6 months]
 bar_width = 0.25
@@ -74,21 +75,32 @@ bar_width = 0.25
 plt.figure(figsize=(10, 6))
 plt.style.use('default')
 
-for i, (country, color) in enumerate(zip(countries_sorted, colors_sorted)):
-    bars = plt.bar(x + (i - 1) * bar_width,
-                   [score_0_6_sorted[i], score_6p_sorted[i]],
-                   width=bar_width,
-                   label=country,
-                   color=color,
-                   edgecolor='black',
-                   linewidth=1.2,
-                   alpha=0.85)
+# Plot each country with consistent color across both periods
+# Use handles for proper legend
+handles = []
+for country, color in colors_map.items():
+    # Find position in each sorted array
+    pos_0_6 = countries_sorted_0_6.index(country)
+    pos_6p = countries_sorted_6p.index(country)
+    
+    # Plot bars at the sorted positions
+    bar1 = plt.bar(x[0] + (pos_0_6 - 1) * bar_width, score_0_6[countries.index(country)],
+                   width=bar_width, color=color,
+                   edgecolor='black', linewidth=1.2, alpha=0.85)
+    
+    plt.bar(x[1] + (pos_6p - 1) * bar_width, score_6p[countries.index(country)],
+            width=bar_width, color=color,
+            edgecolor='black', linewidth=1.2, alpha=0.85)
+    
+    # Add to legend
+    handles.append((bar1[0], country))
 
 plt.xticks(x, ["Before 6 months", "After 6 months"], fontsize=11, fontweight='bold')
 plt.ylabel("Composite Score", fontsize=12, fontweight='bold')
 plt.title("Tesla Sourcing Decision Model\nWeighted Score: Cost 70% | Risk 10% | Logistics 20%", 
           fontsize=13, fontweight='bold', pad=20)
-plt.legend(fontsize=11, loc='upper left', framealpha=0.95, edgecolor='black')
+plt.legend([h[0] for h in handles], [h[1] for h in handles], 
+           fontsize=11, loc='upper left', framealpha=0.95, edgecolor='black')
 plt.grid(axis='y', alpha=0.3, linestyle='--', linewidth=0.7)
 plt.tight_layout()
 
@@ -105,24 +117,35 @@ plt.show()
 plt.figure(figsize=(10, 6))
 plt.style.use('default')
 
-for i, (country, color) in enumerate(zip(countries_sorted, colors_sorted)):
-    bars = plt.bar(x + (i - 1) * bar_width,
-                   [score_0_6_sorted[i], score_6p_sorted[i]],
-                   width=bar_width,
-                   label=country,
-                   color=color,
-                   edgecolor='black',
-                   linewidth=1.2,
-                   alpha=0.85)
+# Plot each country with consistent color across both periods (same sorting logic)
+# Use handles for proper legend
+handles2 = []
+for country, color in colors_map.items():
+    # Find position in each sorted array
+    pos_0_6 = countries_sorted_0_6.index(country)
+    pos_6p = countries_sorted_6p.index(country)
+    
+    # Plot bars at the sorted positions
+    bar1 = plt.bar(x[0] + (pos_0_6 - 1) * bar_width, score_0_6[countries.index(country)],
+                   width=bar_width, color=color,
+                   edgecolor='black', linewidth=1.2, alpha=0.85)
+    
+    plt.bar(x[1] + (pos_6p - 1) * bar_width, score_6p[countries.index(country)],
+            width=bar_width, color=color,
+            edgecolor='black', linewidth=1.2, alpha=0.85)
+    
+    # Add to legend
+    handles2.append((bar1[0], country))
 
-# Set y-axis to start at 30 to highlight differences
-plt.ylim(30, max(score_0_6.max(), score_6p.max()) + 2)
+# Set y-axis to start at 25 to highlight differences
+plt.ylim(25, max(score_0_6.max(), score_6p.max()) + 2)
 
 plt.xticks(x, ["Before 6 months", "After 6 months"], fontsize=11, fontweight='bold')
 plt.ylabel("Composite Score", fontsize=12, fontweight='bold')
 plt.title("Tesla Sourcing Decision Model (Zoomed View)\nWeighted Score: Cost 70% | Risk 10% | Logistics 20%", 
           fontsize=13, fontweight='bold', pad=20)
-plt.legend(fontsize=11, loc='upper left', framealpha=0.95, edgecolor='black')
+plt.legend([h[0] for h in handles2], [h[1] for h in handles2],
+           fontsize=11, loc='upper left', framealpha=0.95, edgecolor='black')
 plt.grid(axis='y', alpha=0.3, linestyle='--', linewidth=0.7)
 plt.tight_layout()
 
